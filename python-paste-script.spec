@@ -3,7 +3,7 @@
 
 Name:           python-paste-script
 Version:        1.7.3
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        A pluggable command-line frontend
 Group:          System Environment/Libraries
 # paste/script/wsgiserver/ is BSD licensed from CherryPy
@@ -14,6 +14,7 @@ Group:          System Environment/Libraries
 License: MIT and BSD and (MIT or Python)
 URL:            http://pythonpaste.org/script
 Source0:        http://pypi.python.org/packages/source/P/PasteScript/PasteScript-%{version}.tar.gz
+Patch0:         CVE-2012-0878-fix-group-permissions-for-pastescriptserve.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 
@@ -39,6 +40,7 @@ Built-in features:
 
 %prep
 %setup -q -n PasteScript-%{version}
+%patch0 -p0
 find docs -type f -exec chmod 0644 \{\} \;
 
 %build
@@ -61,6 +63,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Feb 23 2012 David Malcolm <dmalcolm@redhat.com> - 1.7.3-5
+- fix group permissions in serve.py
+Resolves: CVE-2012-0878
+
 * Wed Jul 14 2010 David Malcolm <dmalcolm@redhat.com> - 1.7.3-4
 - add requirement on pyOpenSSL
 - fix license tag
